@@ -6,6 +6,7 @@ use App\Models\Prodi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Firebase\JWT\JWT;
 
 class AuthController extends Controller
 {
@@ -46,6 +47,18 @@ class AuthController extends Controller
         ],200);
     }
 
+    protected function jwt(Mahasiswa $mahasiswa)
+    {   
+        $payload = [
+            'iss' => 'lumen-jwt',
+            'sub' => $mahasiswa->nim,
+            'iat' => time(),
+            'exp' => time() + 60 * 60
+    ];
+
+    return JWT::encode($payload, env('JWT_SECRET'), 'HS256');
+    }
+
     public function login(Request $request)
     {
         $nim = $request->nim;
@@ -67,7 +80,7 @@ class AuthController extends Controller
             ],400);
         }
 
-        $mahasiswa->token = Str::random(36);
+        $mahasiswa->token = $this->jwt($mahasiswa);
         $mahasiswa->save();
 
         return response()->json([

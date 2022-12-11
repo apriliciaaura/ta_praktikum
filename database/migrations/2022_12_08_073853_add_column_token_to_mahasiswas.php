@@ -14,7 +14,7 @@ class AddColumnTokenToMahasiswas extends Migration
     public function up()
     {
         Schema::table('mahasiswas', function (Blueprint $table) {
-            $table->string('token', 72)->unique()->nullable();
+            $table->string('token')->unique()->nullable();
         });
     }
 

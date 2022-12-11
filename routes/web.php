@@ -26,7 +26,7 @@ $router->group(['prefix' => 'auth'], function () use ($router) {
 
 $router->group(['prefix' => 'mahasiswa'], function () use ($router) {
     $router->get('/', ['uses'=> 'MahasiswaController@getAllMahasiswa']);
-    $router->get('/profile', ['middleware' => 'auth','uses' => 'MahasiswaController@getByToken']);
+    $router->get('/profile', ['middleware' => 'jwt.auth','uses' => 'MahasiswaController@getByToken']);
 });
 
 $router->group(['prefix' => 'prodi'], function () use ($router) {
